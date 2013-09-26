@@ -164,8 +164,7 @@ static NSMutableDictionary *loginControllerCache;
 				UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:agreement];
 				nav.navigationBar.barStyle = UIBarStyleBlack;
 				nav.modalPresentationStyle = UIModalPresentationFormSheet;
-				
-				[self presentModalViewController:nav animated:YES];
+				[self presentViewController:nav animated:YES completion:^{}];
 			});
 		});
 		
@@ -268,8 +267,7 @@ static NSMutableDictionary *loginControllerCache;
 	
 	if (parent == nil)
 		return;
-	
-	[parent presentModalViewController:self animated:NO];
+	[parent presentViewController:self animated:YES completion:^{}];
 }
 
 @end
@@ -296,17 +294,17 @@ static NSMutableDictionary *loginControllerCache;
 		
 		vc.completionBlock = ^() {
 			if (self.dismissesAfterLogin) {
-				[targetViewController dismissModalViewControllerAnimated:YES];
+				[targetViewController dismissViewControllerAnimated:YES completion:^{}];
 			}
 			[self.loginDelegate loginViewController:self didCompleteSuccessfully:success];
 		};
 		
-		[targetViewController dismissModalViewControllerAnimated:NO];
-		[targetViewController presentModalViewController:nav animated:NO];
+		[targetViewController dismissViewControllerAnimated:NO completion:^{}];
+        [targetViewController presentViewController:nav animated:YES completion:^{}];
 		return;
 	}
 	
-	[targetViewController dismissModalViewControllerAnimated:YES];
+	[targetViewController dismissViewControllerAnimated:YES completion:^{}];
 	[self.loginDelegate loginViewController:self didCompleteSuccessfully:success];
 }
 
@@ -314,7 +312,7 @@ static NSMutableDictionary *loginControllerCache;
 	
 	if (page == SP_SIGNUP_PAGE_DONE) {
 		if (self.isShown && !self.waitingForFacebookPermissions) {
-			[self dismissModalViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:^{}];
 		}
 		self.didReceiveSignupFlow = NO;
 		return;
